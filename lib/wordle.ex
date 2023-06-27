@@ -11,7 +11,15 @@ defmodule Wordle do
             {[:green | so_far], Map.update!(target_counts, same, &(&1 - 1))}
 
           {_target_char, guess_char} ->
-            {[guess_char | so_far], target_counts}
+            f = fn {so_far, remaining_counts} ->
+              if Map.get(remaining_counts, guess_char, 0) == 0 do
+                {[:gray | so_far], remaining_counts}
+              else
+                {[:yellow | so_far], Map.update!(remaining_counts, guess_char, &(&1 - 1))}
+              end
+            end
+
+            {[f | so_far], target_counts}
         end
       end)
 
@@ -19,12 +27,8 @@ defmodule Wordle do
       :green, {so_far, remaining_counts} ->
         {[:green | so_far], remaining_counts}
 
-      char, {so_far, remaining_counts} ->
-        case remaining_counts[char] do
-          nil -> {[:gray | so_far], remaining_counts}
-          0 -> {[:gray | so_far], remaining_counts}
-          _ -> {[:yellow | so_far], Map.update!(remaining_counts, char, &(&1 - 1))}
-        end
+      f, acc ->
+        f.(acc)
     end)
     |> elem(0)
   end
