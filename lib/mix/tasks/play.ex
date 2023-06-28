@@ -3,6 +3,12 @@ defmodule Mix.Tasks.Play do
 
   def run(["wordle"]) do
     Mix.Task.run("app.start")
-    Wordle.play()
+    Games.Wordle.play()
   end
+
+  def run([]) do
+    Mix.Task.run("app.start")
+    Games.Menu.welcome()
+  end
+
 end
