@@ -8,15 +8,17 @@ defmodule WordleTest do
     end
 
     test "returns partial green for inexact match" do
-      assert Wordle.feedback("pace", "race") === [:gray, :green, :green, :green]
+      assert Wordle.feedback("pace", "race") === [:red, :green, :green, :green]
     end
 
     test "returns yellow for out of place character" do
-      assert Wordle.feedback("tree", "feet") === [:gray, :yellow, :green, :yellow]
+      assert Wordle.feedback("tree", "feet") === [:red, :yellow, :green, :yellow]
     end
 
     test "returns gray for out of place character which cannot appear again in word" do
-      assert Wordle.feedback("treat", "fleet") === [:gray, :gray, :green, :gray, :green]
+      assert Wordle.feedback("treat", "fleet") === [:red, :red, :green, :red, :green]
+      assert Wordle.feedback("baab", "aaaa") === [:red, :green, :green, :red]
+      assert Wordle.feedback("baba", "aaab") === [:yellow, :green, :red, :yellow]
     end
 
     # test "returns all gray for 0 character matches" do
@@ -29,13 +31,13 @@ defmodule WordleTest do
 
     test "returns 3 yellow for out of place characters" do
       assert Wordle.feedback("glimpse", "sssssss") == [
-               :gray,
-               :gray,
-               :gray,
-               :gray,
-               :gray,
+               :red,
+               :red,
+               :red,
+               :red,
+               :red,
                :green,
-               :gray
+               :red
              ]
     end
   end

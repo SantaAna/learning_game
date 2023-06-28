@@ -34,7 +34,7 @@ defmodule Wordle do
     Enum.all?(feedback, & &1 == :green)
   end
 
-  @spec feedback(String.t(), String.t()) :: list(:gray | :yellow | :green)
+  @spec feedback(String.t(), String.t()) :: list(:red | :yellow | :green)
   def feedback(target_word, guessed_word) do
     target_counts = count_chars(target_word)
 
@@ -52,11 +52,12 @@ defmodule Wordle do
         end
       end)
 
-    Enum.reduce(instructions, {[], remaining_counts}, fn
+    Enum.reduce(Enum.reverse(instructions), {[], remaining_counts}, fn
       f, acc ->
         f.(acc)
     end)
     |> elem(0)
+    |> Enum.reverse()
   end
   
   @spec make_checker_function(:green | String.t()) :: ({list, map} -> {list, map})
