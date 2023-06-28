@@ -70,9 +70,4 @@ defmodule Wordle do
       end
     end) 
   end
-
-  def count_chars(string) do
-    String.graphemes(string)
-    |> Enum.frequencies()
-  end
 end
