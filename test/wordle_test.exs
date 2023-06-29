@@ -21,14 +21,6 @@ defmodule WordleTest do
       assert Wordle.feedback("baba", "aaab") === [:yellow, :green, :red, :yellow]
     end
 
-    # test "returns all gray for 0 character matches" do
-    #   assert Wordle.feedback("jimbob", "ranchy")
-    # end
-
-    # test "returns 3 yellow for out of place characters" do
-    #   assert Wordle.feedback("shrimp", "blimpy")
-    # end
-
     test "returns 3 yellow for out of place characters" do
       assert Wordle.feedback("glimpse", "sssssss") == [
                :red,
