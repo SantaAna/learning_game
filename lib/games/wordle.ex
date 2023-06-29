@@ -62,12 +62,12 @@ defmodule Games.Wordle do
   end
 
   def find_reds({_target_chars, guessed_chars}) do
-    Enum.map(guessed_chars, fn char -> 
+    Enum.map(guessed_chars, fn char ->
       if char in [:yellow, :green] do
-        char 
+        char
       else
         :red
       end
-    end) 
+    end)
   end
 end

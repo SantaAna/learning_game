@@ -1,6 +1,4 @@
 defmodule Games.Wordle.Display do
-
-
   def welcome() do
     Owl.Box.new("Wordle", padding_x: 34)
     |> Owl.IO.puts()
@@ -12,11 +10,17 @@ defmodule Games.Wordle.Display do
       "\n\n",
       "After you enter a guess you will receive feedback:",
       "\n",
-      "* A letter displayed in ", Owl.Data.tag("green", :green)," means you guessed correctly",
+      "* A letter displayed in ",
+      Owl.Data.tag("green", :green),
+      " means you guessed correctly",
       "\n",
-      "* A letter displayed in ", Owl.Data.tag("yellow", :yellow), " means the letter is in the word, but not in the right place", 
+      "* A letter displayed in ",
+      Owl.Data.tag("yellow", :yellow),
+      " means the letter is in the word, but not in the right place",
       "\n",
-      "* A letter displayed in ", Owl.Data.tag("red", :red), " means the letter does not occur in the word"
+      "* A letter displayed in ",
+      Owl.Data.tag("red", :red),
+      " means the letter does not occur in the word"
     ]
     |> Owl.Box.new(title: "Rules", max_width: 76)
     |> Owl.IO.puts()
@@ -25,14 +29,14 @@ defmodule Games.Wordle.Display do
   defp convert_guess_feedback_to_data({guess, feedback}) do
     [String.graphemes(guess), feedback]
     |> Enum.zip()
-    |> Enum.map(fn {letter, tag} -> 
+    |> Enum.map(fn {letter, tag} ->
       Owl.Data.tag(letter, tag)
     end)
   end
-   
+
   def display_feedback(guess, round_count) do
-     ["guess #{round_count} feedback: "] ++ convert_guess_feedback_to_data(guess) 
-     |> Owl.IO.puts() 
+    (["guess #{round_count} feedback: "] ++ convert_guess_feedback_to_data(guess))
+    |> Owl.IO.puts()
   end
 
   def defeat(winning_word) do
@@ -64,5 +68,4 @@ defmodule Games.Wordle.Display do
       end
     )
   end
-
 end

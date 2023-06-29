@@ -1,9 +1,8 @@
 defmodule Games.Menu do
+  def main(_), do: welcome()
 
-  def main(_), do: welcome() 
-  
-  def display_main_menu() do 
-    instructions() 
+  def display_main_menu() do
+    instructions()
     %{launch_function: launch} = games_menu()
     launch.()
   end
@@ -33,8 +32,8 @@ defmodule Games.Menu do
       %{
         name: "Wordle",
         description: "Try to guess a random word using hints from previous guesses.",
-        launch_function: &Games.Wordle.play/0 
-      },    
+        launch_function: &Games.Wordle.play/0
+      },
       %{
         name: "Guessing Game",
         description: "Try to guess a random number using hits from previous guesses.",
@@ -45,10 +44,12 @@ defmodule Games.Menu do
         description: "Try to beat the computer at the ancient game of rock, paper, scissors.",
         launch_function: &Games.RockPaperScissors.play/0
       }
-    ] 
+    ]
 
-    Owl.IO.select(games, render_as: fn %{name: name, description: desc} -> 
-      [Owl.Data.tag(name, :cyan), "\n", desc] 
-    end)
+    Owl.IO.select(games,
+      render_as: fn %{name: name, description: desc} ->
+        [Owl.Data.tag(name, :cyan), "\n", desc]
+      end
+    )
   end
 end

@@ -56,4 +56,3 @@ defmodule Games.RockPaperScissors.Display do
     |> Owl.IO.puts()
   end
 end
-
