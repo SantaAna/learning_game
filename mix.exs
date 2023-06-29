@@ -8,7 +8,7 @@ defmodule Games.MixProject do
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      escript: [main_module: Games.Menu] 
+      escript: [main_module: Games.Menu]
     ]
   end
 
