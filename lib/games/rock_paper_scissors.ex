@@ -9,26 +9,33 @@ defmodule Games.RockPaperScissors do
 
   @choices ["paper", "rock", "scissors"]
 
-  @spec play() :: :ok
+  @spec play() :: any()
   def play() do
     Display.instructions()
-    result(computer_choice(), Display.get_user_input())
+    play(Display.get_user_input())
   end
 
-  @spec result(String.t(), String.t()) :: :ok
+  def play(user_choice) do
+    computer_choice = computer_choice()
+    Display.display_feed_back(computer_choice, user_choice)
+    case result(computer_choice, user_choice) do
+      :computer_wins -> Display.defeat()
+      :user_wins -> Display.victory()
+      :draw -> Display.draw()
+    end
+  end
+
+  @spec result(String.t(), String.t()) :: :computer_wins | :user_wins | :draw
   def result(comp_choice, player_choice) do
     case {@winner[{comp_choice, player_choice}], @winner[{player_choice, comp_choice}]} do
       {true, _} ->
-        Display.display_feed_back(comp_choice, player_choice)
-        Display.defeat()
+        :computer_wins
 
       {_, true} ->
-        Display.display_feed_back(comp_choice, player_choice)
-        Display.victory()
+        :user_wins
 
       _ ->
-        Display.display_feed_back(comp_choice, player_choice)
-        Display.draw()
+        :draw
     end
   end
 

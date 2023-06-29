@@ -1,6 +1,6 @@
 defmodule Games.Wordle.Display do
   def welcome() do
-    Owl.Box.new("Wordle", padding_x: 34)
+    Owl.Box.new(Owl.Data.tag("Wordle", :italic), padding_x: 34)
     |> Owl.IO.puts()
   end
 
@@ -45,7 +45,7 @@ defmodule Games.Wordle.Display do
     |> Owl.IO.puts()
   end
 
-  def victory() do
+  def victory() do{}
     Owl.Data.tag("You Win!", :green)
     |> Owl.Box.new(padding_x: 34, border_tag: :green)
     |> Owl.IO.puts()
