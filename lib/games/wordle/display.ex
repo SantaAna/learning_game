@@ -43,6 +43,9 @@ defmodule Games.Wordle.Display do
     Owl.Data.tag("You Lose\nThe word was: #{winning_word}", :red)
     |> Owl.Box.new(padding_x: 34, border_tag: :red)
     |> Owl.IO.puts()
+
+    Process.sleep(1000)
+    Games.Menu.display_main_menu()
   end
 
   def victory() do{}
