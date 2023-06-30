@@ -1,5 +1,6 @@
 defmodule WordleTest do
   use ExUnit.Case
+  alias Games.Wordle
   # doctest Wordle
 
   describe "testing feedback/2 check rounds" do
@@ -20,17 +21,9 @@ defmodule WordleTest do
       assert Wordle.feedback("baab", "aaaa") === [:red, :green, :green, :red]
       assert Wordle.feedback("baba", "aaab") === [:yellow, :green, :red, :yellow]
     end
-
-    test "returns 3 yellow for out of place characters" do
-      assert Wordle.feedback("glimpse", "sssssss") == [
-               :red,
-               :red,
-               :red,
-               :red,
-               :red,
-               :green,
-               :red
-             ]
+    
+    test "returns yellow for first out of place matches, and gray if matches 'run out'" do
+      assert Wordle.feedback("aabcc", "cabaa") == [:yellow, :green, :green, :yellow, :red]
     end
   end
 end
