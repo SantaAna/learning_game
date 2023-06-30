@@ -18,7 +18,7 @@ defmodule Games.Wordle do
     if win?(feedback) do
       Display.victory()
     else
-      Display.display_feedback({player_guess, feedback}, round_count)
+      Display.display_feedback({{player_guess, feedback}, round_count})
       play(winning_word, round_count + 1)
     end
   end

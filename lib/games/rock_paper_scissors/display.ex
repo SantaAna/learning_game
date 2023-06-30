@@ -1,10 +1,12 @@
 defmodule Games.RockPaperScissors.Display do
+  @behaviour Games.Display.Behaviour
+
   def welcome() do
     Owl.Box.new("Rock Paper Scissors", padding_x: 34)
     |> Owl.IO.puts()
   end
 
-  def instructions() do
+  def instructions(_) do
     [
       "Try to beat the computer by throwing rock, paper, or scissors"
     ]
@@ -12,7 +14,7 @@ defmodule Games.RockPaperScissors.Display do
     |> Owl.IO.puts()
   end
 
-  def get_user_input() do
+  def get_user_input(_) do
     Owl.IO.select(["rock", "paper", "scissors"],
       render_as: fn name ->
         [Owl.Data.tag(name, :cyan)]
@@ -29,7 +31,7 @@ defmodule Games.RockPaperScissors.Display do
     Games.Menu.display_main_menu()
   end
 
-  def defeat() do
+  def defeat(_) do
     Owl.Data.tag("You Lose", :red)
     |> Owl.Box.new(padding_x: 34, border_tag: :red)
     |> Owl.IO.puts()
@@ -47,7 +49,7 @@ defmodule Games.RockPaperScissors.Display do
     Games.Menu.display_main_menu()
   end
 
-  def display_feed_back(computer_play, human_play) do
+  def display_feedback({computer_play, human_play}) do
     [
       Owl.Data.tag("You play #{human_play}", :green),
       "\n",

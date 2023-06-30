@@ -1,4 +1,6 @@
 defmodule Games.Wordle.Display do
+  @behaviour Games.Display.Behaviour
+
   def welcome() do
     Owl.Box.new(Owl.Data.tag("Wordle", :italic), padding_x: 34)
     |> Owl.IO.puts()
@@ -34,7 +36,7 @@ defmodule Games.Wordle.Display do
     end)
   end
 
-  def display_feedback(guess, round_count) do
+  def display_feedback({guess, round_count}) do
     (["guess #{round_count} feedback: "] ++ convert_guess_feedback_to_data(guess))
     |> Owl.IO.puts()
   end

@@ -11,15 +11,15 @@ defmodule Games.RockPaperScissors do
 
   @spec play() :: any()
   def play() do
-    Display.instructions()
-    play(Display.get_user_input())
+    Display.instructions(nil)
+    play(Display.get_user_input(nil))
   end
 
   def play(user_choice) do
     computer_choice = computer_choice()
-    Display.display_feed_back(computer_choice, user_choice)
+    Display.display_feedback({computer_choice, user_choice})
     case result(computer_choice, user_choice) do
-      :computer_wins -> Display.defeat()
+      :computer_wins -> Display.defeat(nil)
       :user_wins -> Display.victory()
       :draw -> Display.draw()
     end

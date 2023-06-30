@@ -1,4 +1,6 @@
 defmodule Games.GuessingGame.Display do
+  @behaviour Games.Display.Behaviour
+
   def welcome() do
     Owl.Box.new("Guessing Game", padding_x: 34)
     |> Owl.IO.puts()
