@@ -2,6 +2,8 @@ defmodule Games.Wordle do
   @word_path "./resources/words.txt"
   alias Games.Wordle.Display
 
+  
+
   def play() do
     Display.welcome()
     Display.instructions()
@@ -12,13 +14,19 @@ defmodule Games.Wordle do
   def play(winning_word, 7), do: Display.defeat(winning_word)
 
   def play(winning_word, round_count) do
-    player_guess = Display.get_user_input()
+    display_module = Application.get_env(
+      :wordl,
+      :display_module,
+      Games.Wordle.Display 
+    )
+
+    player_guess = display_module.get_user_input()
     feedback = feedback(winning_word, player_guess)
 
     if win?(feedback) do
-      Display.victory()
+      display_module.victory()
     else
-      Display.display_feedback({{player_guess, feedback}, round_count})
+      display_module.display_feedback({{player_guess, feedback}, round_count})
       play(winning_word, round_count + 1)
     end
   end
