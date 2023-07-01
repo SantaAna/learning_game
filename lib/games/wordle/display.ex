@@ -59,7 +59,7 @@ defmodule Games.Wordle.Display do
     Games.Menu.display_main_menu()
   end
 
-  def get_user_input(word_length \\ 6) do
+  def get_user_input(word_length) do
     Owl.IO.input(
       label: "Enter your guess, word length is #{word_length}",
       cast: fn input ->
