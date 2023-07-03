@@ -27,32 +27,33 @@ defmodule WordleTest do
     end
   end
 
-  describe "testing play/2 function" do
+  describe "testing play/1 function" do
     test "displays winning message if player has won" do
-      winning_word = "dirkel"
+      game_struct = %Wordle{winning_word: "dirkel", round_count: 1} 
 
       expect(Wordle.MockDisplay, :get_user_input, 1, fn _ ->
-        winning_word
+        "dirkel"
       end)
 
-      expect(Wordle.MockDisplay, :victory, 1, fn -> nil end)
-      Wordle.play(winning_word, 1)
+      expect(Wordle.MockDisplay, :victory, 1, fn _ -> nil end)
+      Wordle.play(game_struct)
       verify!(Wordle.MockDisplay)
     end
   end
 
   describe "displays defeat message if player has used all guesses" do
+    game_struct = %Wordle{winning_word: "dirkel", round_count: 7} 
     expect(Wordle.MockDisplay, :defeat, 1, fn _ -> nil end)
-    Wordle.play("dirkle", 7)
+    Wordle.play(game_struct)
     verify!(Wordle.MockDisplay)
   end
 
   describe "plays an additional round if player guesses incorrectly and there are more tries" do
-    winning_word = "dirkle"
+    game_struct = %Wordle{winning_word: "dirkel", round_count: 6} 
     expect(Wordle.MockDisplay, :display_feedback, 1, fn _ -> nil end)
     expect(Wordle.MockDisplay, :get_user_input, 1, fn _ -> "dirkly" end)
     expect(Wordle.MockDisplay, :defeat, 1, fn _ -> nil end)
-    Wordle.play(winning_word, 6)
+    Wordle.play(game_struct)
     verify!(Wordle.MockDisplay)
   end
 end
