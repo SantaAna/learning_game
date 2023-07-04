@@ -16,6 +16,16 @@ defmodule Games.TicTacToe.Board do
     end
   end
 
+  def fully_marked?(board) do
+    for x <- 1..board.size, y <- 1..board.size, reduce: true do
+      false -> false 
+      true -> not is_blank?(board, [x,y])
+    end
+  end
+
+  def free_spaces(board) do
+    Enum.filter(board, fn {_k, v} -> v == :blank end)
+  end
 
   @spec is_blank?(map, list) :: boolean
   def is_blank?(board, [_row, _col] = mark_spot) do

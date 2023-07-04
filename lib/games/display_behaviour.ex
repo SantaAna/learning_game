@@ -5,5 +5,6 @@ defmodule Games.Display.Behaviour do
   @callback  get_user_input(user_message_config :: term) :: term
   @callback  victory(map()) :: :ok
   @callback  defeat(defeat_message_config :: term) :: nil
-  @optional_callbacks defeat: 1
+  @callback  draw(draw_message_config :: term) :: :ok
+  @optional_callbacks defeat: 1, draw: 1
 end
