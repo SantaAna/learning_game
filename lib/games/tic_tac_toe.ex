@@ -10,7 +10,7 @@ defmodule Games.TicTacToe do
 
   @display_module Application.compile_env(
                     :games,
-                    :wordle_display_module,
+                    :tic_tac_toe_display_module,
                     Games.TicTacToe.Display
                   )
 
@@ -55,12 +55,13 @@ defmodule Games.TicTacToe do
   def computer_turn(%__MODULE__{winner: winner} = game) when winner != nil, do: game 
   def computer_turn(%__MODULE__{draw: true} = game), do: game 
   def computer_turn(%__MODULE__{board: board} = game) do
-    computer_move = ComputerPlayer.move(board)
+    computer_move = ComputerPlayer.move(board, :perfect)
     {:ok, board} = Board.mark(board, computer_move, :o)
     Map.put(game, :board, board)
   end
 
   @spec win_check(t) :: t
+  def win_check(%__MODULE__{winner: winner} = game) when winner != nil, do: game
   def win_check(%__MODULE__{board: board} = game) do
     case winner(board) do
       :no_winner -> game
@@ -74,8 +75,10 @@ defmodule Games.TicTacToe do
   end
 
   @spec draw_check(t) :: t
+  def draw_check(%__MODULE__{draw: true} = game), do: game
   def draw_check(%__MODULE__{board: board} = game) do
     if Board.fully_marked?(board) do
+      @display_module.display_feedback(game)
       Map.put(game, :draw, true)
     else
       game

@@ -44,6 +44,7 @@ defmodule TicTacToeBoardTest do
           board when rem(x, 2) == 0 ->
             {:ok, board} = Board.mark(board, [x, y], :x)
             board
+
           board ->
             {:ok, board} = Board.mark(board, [x, y], :o)
             board
