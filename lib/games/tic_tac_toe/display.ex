@@ -57,11 +57,11 @@ defmodule Games.TicTacToe.Display do
     |> add_seperators()
     |> add_newlines()
     |> add_row_seperators()
-    |> Owl.Box.new(title: "Board")
+    |> Owl.Box.new(title: "Board",  vertical_align: :middle, horizontal_align: :center)
     |> Owl.IO.puts()
   end
 
-  defp add_row_seperators(rows), do: Enum.join(rows, "#####\n")
+  defp add_row_seperators(rows), do: Enum.intersperse(rows, Owl.Data.tag("#####\n", :yellow))
 
   defp strip_row_nums(rows) do
     rows
@@ -72,18 +72,18 @@ defmodule Games.TicTacToe.Display do
   defp to_represenations(rows) do
     Enum.map(rows, fn row ->
       Enum.map(row, fn
-        :blank -> " "
-        ele -> Atom.to_string(ele)
+        :blank -> Owl.Data.tag(" ", :yellow)
+        ele -> Owl.Data.tag(Atom.to_string(ele), :cyan)
       end)
     end)
   end
 
   defp add_seperators(rows) do
-    Enum.map(rows, &Enum.join(&1, "#"))
+    Enum.map(rows, &Enum.intersperse(&1, Owl.Data.tag("#", :yellow)))
   end
 
   defp add_newlines(rows) do
-    Enum.map(rows, &(&1 <> "\n"))
+    Enum.map(rows, & Owl.Data.tag([&1, "\n"], :yellow))
   end
 
   def get_user_input(%{board: board}) do
@@ -93,11 +93,20 @@ defmodule Games.TicTacToe.Display do
         with {:ok, input} <- contains_comma(input),
              str_coords <- split_coords(input),
              {:ok, coords} <- coords_to_integer(str_coords),
+             {:ok, coords} <- check_spot_possible(coords, board),
              {:ok, coords} <- check_spot_available(coords, board) do
           {:ok, coords}
         end
       end
     )
+  end
+
+  defp check_spot_possible([row, col] = coords, %{size: size}) do
+    case [row < 1 or col < 1, row > size or col > size] do 
+      [true, false] -> {:error, "row and column values must be greater than zero."}
+      [false, true] -> {:error, "row and column number cannot be greater than the size of the board."}
+      _ -> {:ok, coords}
+    end
   end
 
   defp check_spot_available(coords, board) do
