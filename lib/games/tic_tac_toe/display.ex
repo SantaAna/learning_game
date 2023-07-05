@@ -86,6 +86,14 @@ defmodule Games.TicTacToe.Display do
     Enum.map(rows, & Owl.Data.tag([&1, "\n"], :yellow))
   end
 
+  def get_user_input(:computer_choice) do
+    Owl.IO.select([["random", "computer picks random moves"], ["perfect", "computer picks the best move"]], render_as: fn [mode, desc] -> 
+        [Owl.Data.tag(mode, :cyan), "\n", desc]
+    end) 
+    |> List.first()
+    |> String.to_atom()
+  end
+
   def get_user_input(%{board: board}) do
     Owl.IO.input(
       label: "Enter the co-ordinate to place your next X",

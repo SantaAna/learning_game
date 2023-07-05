@@ -1,12 +1,12 @@
 defmodule Games.TicTacToe do
-  defstruct [:board,  winner: nil, draw: false]
+  defstruct [:board, :computer_difficulty, winner: nil, draw: false]
   alias Games.TicTacToe.{Board, ComputerPlayer}
 
   @type t :: %__MODULE__{
-    board: map,
-    winner: nil | :player | :computer,
-    draw: boolean
-  }
+          board: map,
+          winner: nil | :player | :computer,
+          draw: boolean
+        }
 
   @display_module Application.compile_env(
                     :games,
@@ -17,16 +17,17 @@ defmodule Games.TicTacToe do
   def play() do
     @display_module.welcome()
     @display_module.instructions(nil)
-    play(%__MODULE__{board: Board.new()})
+    comp_difficulty = @display_module.get_user_input(:computer_choice)
+    play(%__MODULE__{board: Board.new(), computer_difficulty: comp_difficulty})
   end
 
   def play(%__MODULE__{winner: :player}), do: @display_module.victory(nil)
   def play(%__MODULE__{winner: :computer}), do: @display_module.defeat(nil)
-  def play(%__MODULE__{draw: :true}), do: @display_module.draw(nil)
+  def play(%__MODULE__{draw: true}), do: @display_module.draw(nil)
 
   def play(%__MODULE__{} = game) do
     game
-    |> show_feedback() 
+    |> show_feedback()
     |> player_turn()
     |> win_check()
     |> draw_check()
@@ -41,10 +42,11 @@ defmodule Games.TicTacToe do
     @display_module.display_feedback(game)
     game
   end
-  
+
   @spec player_turn(t) :: t
-  def player_turn(%__MODULE__{winner: winner} = game) when winner != nil, do: game 
-  def player_turn(%__MODULE__{draw: true} = game), do: game 
+  def player_turn(%__MODULE__{winner: winner} = game) when winner != nil, do: game
+  def player_turn(%__MODULE__{draw: true} = game), do: game
+
   def player_turn(%__MODULE__{board: board} = game) do
     player_move = @display_module.get_user_input(game)
     {:ok, board} = Board.mark(board, player_move, :x)
@@ -52,23 +54,28 @@ defmodule Games.TicTacToe do
   end
 
   @spec computer_turn(t) :: t
-  def computer_turn(%__MODULE__{winner: winner} = game) when winner != nil, do: game 
-  def computer_turn(%__MODULE__{draw: true} = game), do: game 
-  def computer_turn(%__MODULE__{board: board} = game) do
-    computer_move = ComputerPlayer.move(board, :perfect)
+  def computer_turn(%__MODULE__{winner: winner} = game) when winner != nil, do: game
+  def computer_turn(%__MODULE__{draw: true} = game), do: game
+
+  def computer_turn(%__MODULE__{board: board, computer_difficulty: comp_difficulty} = game) do
+    computer_move = ComputerPlayer.move(board, comp_difficulty)
     {:ok, board} = Board.mark(board, computer_move, :o)
     Map.put(game, :board, board)
   end
 
   @spec win_check(t) :: t
   def win_check(%__MODULE__{winner: winner} = game) when winner != nil, do: game
+
   def win_check(%__MODULE__{board: board} = game) do
     case winner(board) do
-      :no_winner -> game
-      {true, :x} -> 
+      :no_winner ->
+        game
+
+      {true, :x} ->
         @display_module.display_feedback(game)
         Map.put(game, :winner, :player)
-      {true, :o} -> 
+
+      {true, :o} ->
         @display_module.display_feedback(game)
         Map.put(game, :winner, :computer)
     end
@@ -76,6 +83,7 @@ defmodule Games.TicTacToe do
 
   @spec draw_check(t) :: t
   def draw_check(%__MODULE__{draw: true} = game), do: game
+
   def draw_check(%__MODULE__{board: board} = game) do
     if Board.fully_marked?(board) do
       @display_module.display_feedback(game)
