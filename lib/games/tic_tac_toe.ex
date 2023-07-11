@@ -1,6 +1,6 @@
 defmodule Games.TicTacToe do
   defstruct [:board, :computer_difficulty, winner: nil, draw: false]
-  alias Games.TicTacToe.{Board, ComputerPlayer}
+  alias Games.TicTacToe.{Board, ComputerPlayer, ComputerMoveServer}
 
   @type t :: %__MODULE__{
           board: map,
@@ -58,6 +58,10 @@ defmodule Games.TicTacToe do
   def computer_turn(%__MODULE__{draw: true} = game), do: game
 
   def computer_turn(%__MODULE__{board: board, computer_difficulty: comp_difficulty} = game) do
+    computer_move = case comp_difficulty do
+      :random -> ComputerPlayer.move(board, :random) 
+      :perfect -> ComputerMoveServer.get_move(board)
+    end
     computer_move = ComputerPlayer.move(board, comp_difficulty)
     {:ok, board} = Board.mark(board, computer_move, :o)
     Map.put(game, :board, board)
