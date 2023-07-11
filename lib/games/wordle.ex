@@ -1,27 +1,50 @@
 defmodule Games.Wordle do
   @word_path "./resources/words.txt"
+  @display_module Application.compile_env(
+                    :games,
+                    :wordle_display_module,
+                    Games.Wordle.Display
+                  )
+
+  defstruct [:winning_word, :player_guess, :feed_back, round_count: 1]
+
   alias Games.Wordle.Display
 
   def play() do
     Display.welcome()
     Display.instructions()
-    winning_word = random_word()
-    play(winning_word, 1)
+    play(%__MODULE__{winning_word: random_word()})
   end
 
-  def play(winning_word, 7), do: Display.defeat(winning_word)
+  def play(%__MODULE__{round_count: 7} = game), do: @display_module.defeat(game)
 
-  def play(winning_word, round_count) do
-    player_guess = Display.get_user_input()
-    feedback = feedback(winning_word, player_guess)
+  def play(%__MODULE__{} = game) do
+    game
+    |> advance_round()
+    |> update_player_guess()
+    |> game_feedback()
+    |> continue_decision()
+  end
 
-    if win?(feedback) do
-      Display.victory()
+  def advance_round(%__MODULE__{} = game), do: Map.update!(game, :round_count, & &1 + 1) 
+
+  def update_player_guess(%__MODULE__{} = game) do
+    Map.put(game, :player_guess, @display_module.get_user_input(6)) 
+  end
+
+  def game_feedback(%__MODULE__{player_guess: player_guess, winning_word: winning_word} = game) do
+    Map.put(game, :feed_back, feedback(winning_word, player_guess))
+  end
+
+  def continue_decision(%__MODULE__{} = game) do
+    if win?(game) do 
+      @display_module.victory(game)
     else
-      Display.display_feedback({{player_guess, feedback}, round_count})
-      play(winning_word, round_count + 1)
+      @display_module.display_feedback(game)
+      play(game)
     end
   end
+
 
   @spec random_word(integer) :: String.t()
   def random_word(length \\ 6) do
@@ -31,7 +54,7 @@ defmodule Games.Wordle do
     |> Enum.random()
   end
 
-  def win?(feedback) do
+  def win?(%__MODULE__{feed_back: feedback}) do
     Enum.all?(feedback, &(&1 == :green))
   end
 

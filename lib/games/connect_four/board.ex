@@ -55,18 +55,18 @@ defmodule Games.ConnectFour.Board do
   """
   @spec get_rows(t) :: list(list(marker))
   def get_rows(board) do
-    for row <- 0..(board.size - 1), do: get_row(board, row) 
+    for row <- 0..(board.size - 1), do: get_row(board, row)
   end
-
-  # gets a particular column
+  
+  #gets a particular column
   @spec get_col(t, integer) :: list(marker)
   defp get_col(board, col_num) do
     board
     |> Map.get(:cols)
     |> Enum.at(col_num)
   end
-
-  # gets a particular row
+  
+  #gets a particular row
   @spec get_row(t, integer) :: list(marker)
   defp get_row(board, row_num) do
     board.cols

@@ -36,12 +36,12 @@ defmodule Games.Wordle.Display do
     end)
   end
 
-  def display_feedback({guess, round_count}) do
-    (["guess #{round_count} feedback: "] ++ convert_guess_feedback_to_data(guess))
+  def display_feedback(%Games.Wordle{player_guess: guess, feed_back: feedback, round_count: round_count}) do
+    (["guess #{round_count} feedback: "] ++ convert_guess_feedback_to_data({guess, feedback}))
     |> Owl.IO.puts()
   end
 
-  def defeat(winning_word) do
+  def defeat(%Games.Wordle{winning_word: winning_word}) do
     Owl.Data.tag("You Lose\nThe word was: #{winning_word}", :red)
     |> Owl.Box.new(padding_x: 34, border_tag: :red)
     |> Owl.IO.puts()
@@ -50,7 +50,7 @@ defmodule Games.Wordle.Display do
     Games.Menu.display_main_menu()
   end
 
-  def victory() do{}
+  def victory(_game) do
     Owl.Data.tag("You Win!", :green)
     |> Owl.Box.new(padding_x: 34, border_tag: :green)
     |> Owl.IO.puts()
@@ -59,7 +59,7 @@ defmodule Games.Wordle.Display do
     Games.Menu.display_main_menu()
   end
 
-  def get_user_input(word_length \\ 6) do
+  def get_user_input(word_length) do
     Owl.IO.input(
       label: "Enter your guess, word length is #{word_length}",
       cast: fn input ->

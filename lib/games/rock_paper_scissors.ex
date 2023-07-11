@@ -18,8 +18,9 @@ defmodule Games.RockPaperScissors do
   def play(user_choice) do
     computer_choice = computer_choice()
     Display.display_feedback({computer_choice, user_choice})
+
     case result(computer_choice, user_choice) do
-      :computer_wins -> Display.defeat(nil)
+      :computer_wins -> Display.efeat(nil)
       :user_wins -> Display.victory()
       :draw -> Display.draw()
     end

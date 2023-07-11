@@ -43,6 +43,11 @@ defmodule Games.Menu do
         name: "Rock Paper Scissors",
         description: "Try to beat the computer at the ancient game of rock, paper, scissors.",
         launch_function: &Games.RockPaperScissors.play/0
+      },
+      %{
+        name: "Tic-Tac-Toe",
+        description: "Try to beat the computer at Tic-Tac-Toe",
+        launch_function: &Games.TicTacToe.play/0
       }
     ]
 

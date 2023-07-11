@@ -1,21 +1,9 @@
 # Games
 
-**TODO: Add description**
+Collection of simple games to play through the console.
 
-## Installation
+Created to practice testing and functional control flow in Elixir.
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `games` to your list of dependencies in `mix.exs`:
+## Running Games
 
-```elixir
-def deps do
-  [
-    {:games, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/games>.
-
+Clone the repo and run mix play.
