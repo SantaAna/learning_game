@@ -41,6 +41,24 @@ defmodule Games.ConnectFour.Board do
         ]
     end
   end
+  
+  @doc """
+  Checks if a board is full by checking on all of the columns.
+  """
+  @spec full?(t) :: boolean
+  def full?(board) do
+    0..board.size-1
+    |> Enum.map(&col_full?(board, &1))
+    |> Enum.all?()
+  end
+
+  @spec open_cols(t) :: [integer]
+  def open_cols(board) do
+    0..board.size-1
+    |> Enum.map(&[&1, col_full?(board, &1)])
+    |> Enum.filter(& not List.last(&1))
+    |> Enum.map(& List.first(&1))
+  end
 
   @doc """
   Will return a list of all columns on the board
@@ -107,7 +125,7 @@ defmodule Games.ConnectFour.Board do
   # a bool that starts true and is flipped if a blank spot is
   # encountered
   @spec col_full?(t, integer) :: boolean
-  defp col_full?(board, col_num) do
+  def col_full?(board, col_num) do
     get_col(board, col_num)
     |> Enum.reduce(true, fn
       :blank, _ -> false
