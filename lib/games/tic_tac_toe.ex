@@ -62,7 +62,6 @@ defmodule Games.TicTacToe do
       :random -> ComputerPlayer.move(board, :random) 
       :perfect -> ComputerMoveServer.get_move(board)
     end
-    computer_move = ComputerPlayer.move(board, comp_difficulty)
     {:ok, board} = Board.mark(board, computer_move, :o)
     Map.put(game, :board, board)
   end

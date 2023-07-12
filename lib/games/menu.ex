@@ -48,6 +48,11 @@ defmodule Games.Menu do
         name: "Tic-Tac-Toe",
         description: "Try to beat the computer at Tic-Tac-Toe",
         launch_function: &Games.TicTacToe.play/0
+      },
+      %{
+        name: "Connect Four",
+        description: "Try to connect four before the computer.",
+        launch_function: &Games.ConnectFour.play/0
       }
     ]
 
